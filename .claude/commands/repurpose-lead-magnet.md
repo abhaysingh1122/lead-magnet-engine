@@ -522,10 +522,27 @@ python scripts/generate_social_posts.py \
   --notion-url "[notion page URL from STEP 7]"
 ```
 
-After both complete, report:
+**Promo Posts (DM-gated lead magnet promotions):**
+
+Ask the user: "What keyword should people comment/DM to get this? (e.g. PLAYBOOK, GUIDE, SYSTEM)"
+
+Then ask: "How do you want to gate it? 1) Comment keyword 2) DM keyword 3) Link in first comment 4) Direct link"
+
+```
+python scripts/generate_promo_posts.py \
+  --title "[full title]" \
+  --content "output/[slugified-title]-abhay.md" \
+  --output "output/[slugified-title]-promo-posts.md" \
+  --keyword "[KEYWORD]" \
+  --cta-type "[comment_keyword|dm_keyword|link_in_comments|link_direct]" \
+  --notion-url "[notion page URL from STEP 7]"
+```
+
+After all three complete, report:
 > "Distribution assets generated:
 > - **Email sequence:** `output/[filename]-email-sequence.md` (5 emails)
-> - **Social posts:** `output/[filename]-social-posts.md` (3 LinkedIn + 1 Twitter thread)"
+> - **Social posts:** `output/[filename]-social-posts.md` (3 LinkedIn + 1 Twitter thread)
+> - **Promo posts:** `output/[filename]-promo-posts.md` (3 LinkedIn promo + 1 Twitter thread + 1 tweet)"
 
 ---
 
