@@ -1,0 +1,22 @@
+# Secrets
+.env
+.nano-banana-config.json
+
+# Generated output (keep the directory via .gitkeep, ignore all files)
+output/*
+!output/.gitkeep
+
+# Internal dev files
+todos/
+compound-engineering.local.md
+docs/
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# OS
+.DS_Store
+Thumbs.db

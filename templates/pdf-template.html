@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+
+@page {
+    size: A4;
+    margin: 18mm 25mm 20mm 25mm;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+    font-size: 10.5pt;
+    line-height: 1.7;
+}
+
+/* =====================================
+   PAGE HEADER — logo + blue rule
+===================================== */
+
+.page-header {
+    margin-bottom: 6mm;
+}
+
+.page-logo {
+    height: 22px;
+    width: auto;
+    display: block;
+    margin-bottom: 3mm;
+}
+
+.page-rule {
+    border: none;
+    border-top: 2px solid #0056A7;
+    margin: 0;
+}
+
+/* =====================================
+   DOCUMENT TITLE BLOCK
+   (matches reference: large blue title,
+    optional subtitle, thin grey divider)
+===================================== */
+
+.doc-title {
+    font-size: 21pt;
+    font-weight: bold;
+    color: #0056A7;
+    line-height: 1.2;
+    margin-top: 5mm;
+    margin-bottom: 2mm;
+    letter-spacing: -0.3px;
+}
+
+.doc-subtitle {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #0056A7;
+    line-height: 1.4;
+    margin-top: 0;
+    margin-bottom: 3.5mm;
+}
+
+.title-divider {
+    border: none;
+    border-top: 1px solid #DDDDDD;
+    margin: 0 0 5mm 0;
+}
+
+/* =====================================
+   HEADINGS
+===================================== */
+
+h1 {
+    font-size: 15pt;
+    font-weight: bold;
+    color: #0056A7;
+    line-height: 1.25;
+    margin-top: 7mm;
+    margin-bottom: 2mm;
+    page-break-after: avoid;
+}
+
+h2 {
+    font-size: 13pt;
+    font-weight: bold;
+    color: #0056A7;
+    margin-top: 6mm;
+    margin-bottom: 2mm;
+    line-height: 1.3;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 10.5pt;
+    font-weight: bold;
+    color: #1A1A1A;
+    margin-top: 4mm;
+    margin-bottom: 1mm;
+    page-break-after: avoid;
+}
+
+h4 {
+    font-size: 8.5pt;
+    font-weight: bold;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 3mm;
+    margin-bottom: 1mm;
+    page-break-after: avoid;
+}
+
+/* =====================================
+   BODY TEXT
+===================================== */
+
+p {
+    font-size: 10.5pt;
+    line-height: 1.75;
+    margin-top: 0;
+    margin-bottom: 2.5mm;
+    color: #1A1A1A;
+}
+
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+/* =====================================
+   LISTS
+===================================== */
+
+ul {
+    margin: 1mm 0 3mm 0;
+    padding-left: 5mm;
+}
+
+ol {
+    margin: 1mm 0 3mm 0;
+    padding-left: 5mm;
+}
+
+li {
+    font-size: 10.5pt;
+    line-height: 1.7;
+    margin-bottom: 1.5mm;
+    color: #1A1A1A;
+}
+
+/* =====================================
+   CODE BLOCKS
+===================================== */
+
+pre {
+    background-color: #F5F7FA;
+    border-left: 3px solid #1863DC;
+    padding: 3mm 5mm;
+    margin: 2mm 0 4mm 0;
+    font-family: Courier, monospace;
+    font-size: 8.5pt;
+    line-height: 1.6;
+    color: #2A2A2A;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+code {
+    font-family: Courier, monospace;
+    font-size: 8.5pt;
+    background-color: #EEF2FB;
+    color: #0056A7;
+    padding: 0 2px;
+}
+
+/* =====================================
+   TABLES
+===================================== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 3mm 0 4mm 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+}
+
+th {
+    background-color: #0056A7;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 2.5mm 3.5mm;
+    text-align: left;
+    font-size: 9pt;
+}
+
+td {
+    padding: 2mm 3.5mm;
+    border-bottom: 1px solid #E8E8E8;
+    color: #1A1A1A;
+    font-size: 9.5pt;
+    line-height: 1.5;
+    vertical-align: top;
+}
+
+tr:nth-child(even) td {
+    background-color: #F6F9FF;
+}
+
+/* =====================================
+   HORIZONTAL RULE
+===================================== */
+
+hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 5mm 0;
+}
+
+/* =====================================
+   CALLOUT BOXES
+===================================== */
+
+blockquote {
+    background-color: #EBF3FF;
+    border-left: 4px solid #0056A7;
+    padding: 4mm 5mm;
+    margin: 3mm 0 4mm 0;
+}
+
+blockquote p {
+    font-size: 10pt;
+    line-height: 1.7;
+    color: #1A1A1A;
+    margin: 0 0 2mm 0;
+}
+
+blockquote p:last-child {
+    margin: 0;
+}
+
+/* =====================================
+   IMAGES (keep with preceding content)
+===================================== */
+
+div.img-wrap {
+    margin: 4mm 0;
+    text-align: center;
+    page-break-inside: avoid;
+    page-break-before: avoid;
+}
+
+div.img-wrap img {
+    max-width: 85%;
+    height: auto;
+}
+
+/* =====================================
+   CTA SECTION
+===================================== */
+
+.cta-section {
+    background-color: #003f80;
+    padding: 7mm 9mm;
+    margin-top: 8mm;
+    page-break-inside: avoid;
+}
+
+.cta-section h2 {
+    font-size: 13pt;
+    color: #FFFFFF;
+    margin-top: 0;
+    margin-bottom: 2.5mm;
+    line-height: 1.3;
+}
+
+.cta-section p {
+    font-size: 9.5pt;
+    color: #B8D4F0;
+    line-height: 1.65;
+    margin-bottom: 2.5mm;
+}
+
+.cta-section strong {
+    color: #FFFFFF;
+}
+
+.cta-section a {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+.cta-section table {
+    background-color: #0056A7;
+    margin-top: 2.5mm;
+    margin-bottom: 2.5mm;
+}
+
+.cta-section th {
+    background-color: #1863DC;
+    color: #FFFFFF;
+    font-size: 8.5pt;
+    padding: 2mm 3mm;
+    border-bottom: 1px solid #3B82F6;
+}
+
+.cta-section td {
+    color: #DDEEFF;
+    font-size: 9pt;
+    padding: 2mm 3mm;
+    border-bottom: 1px solid #1863DC;
+    background-color: #0056A7;
+}
+
+.cta-section tr:nth-child(even) td {
+    background-color: #0056A7;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Page header: logo + blue rule -->
+<div class="page-header">
+  <img src="data:image/png;base64,{{logo_b64}}" class="page-logo" />
+  <hr class="page-rule" />
+</div>
+
+<!-- Title block -->
+<h1 class="doc-title">{{title}}</h1>
+{{subtitle_block}}
+<hr class="title-divider" />
+
+{{content}}
+
+</body>
+</html>

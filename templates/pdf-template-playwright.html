@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@page {
+    size: A4;
+    margin: 20mm 26mm 22mm 26mm;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.72;
+    color: #1A1A1A;
+    background: #FFFFFF;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    /* Margins handled via Playwright page.pdf() — applied per page */
+    padding: 0;
+}
+
+/* ============================================
+   TITLE HEADER BLOCK
+   (compact — content flows immediately below)
+============================================ */
+
+.cover-block {
+    margin-bottom: 7mm;
+}
+
+.cover-logo {
+    height: 24px;
+    width: auto;
+    display: block;
+    margin-bottom: 3.5mm;
+}
+
+.cover-rule-blue {
+    border: none;
+    border-top: 2px solid #0056A7;
+    margin: 0;
+}
+
+.cover-title {
+    font-size: 24pt;
+    font-weight: 800;
+    color: #0056A7;
+    line-height: 1.18;
+    margin: 6mm 0 3mm 0;
+    letter-spacing: -0.4px;
+}
+
+.cover-subtitle {
+    font-size: 12.5pt;
+    font-weight: 600;
+    color: #0056A7;
+    line-height: 1.4;
+    margin: 0 0 4mm 0;
+}
+
+.cover-divider {
+    border: none;
+    border-top: 1px solid #DDDDDD;
+    margin: 0 0 2mm 0;
+}
+
+/* ============================================
+   HEADINGS
+============================================ */
+
+h2 {
+    font-size: 14.5pt;
+    font-weight: 700;
+    color: #0056A7;
+    margin: 9mm 0 3mm 0;
+    line-height: 1.28;
+    break-after: avoid;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 11.5pt;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 5mm 0 2mm 0;
+    break-after: avoid;
+    page-break-after: avoid;
+}
+
+h4 {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 4mm 0 1.5mm 0;
+    break-after: avoid;
+    page-break-after: avoid;
+}
+
+/* ============================================
+   BODY TEXT
+============================================ */
+
+p {
+    font-size: 11pt;
+    line-height: 1.75;
+    margin: 0 0 3mm 0;
+    color: #1A1A1A;
+}
+
+strong { font-weight: 700; }
+em { font-style: italic; }
+
+a { color: #0056A7; }
+
+/* ============================================
+   LISTS
+============================================ */
+
+ul, ol {
+    margin: 1.5mm 0 3.5mm 0;
+    padding-left: 6mm;
+}
+
+li {
+    font-size: 11pt;
+    line-height: 1.7;
+    margin-bottom: 2mm;
+    color: #1A1A1A;
+}
+
+/* ============================================
+   HORIZONTAL RULE
+============================================ */
+
+hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 6mm 0;
+}
+
+/* ============================================
+   CALLOUT BOXES
+============================================ */
+
+.callout-warning {
+    background: #FFF8ED;
+    border-left: 3.5px solid #F59E0B;
+    padding: 4mm 5mm;
+    margin: 4mm 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border-radius: 3px;
+}
+
+.callout-success {
+    background: #F0FDF4;
+    border-left: 3.5px solid #10B981;
+    padding: 4mm 5mm;
+    margin: 4mm 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border-radius: 3px;
+}
+
+.callout-info {
+    background: #EBF4FF;
+    border-left: 3.5px solid #3B82F6;
+    padding: 4mm 5mm;
+    margin: 4mm 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border-radius: 3px;
+}
+
+.callout-inner {
+    font-size: 10.5pt;
+    line-height: 1.65;
+    color: #1A1A1A;
+}
+
+.callout-inner a {
+    color: #0056A7;
+}
+
+/* ============================================
+   TABLES
+============================================ */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 3.5mm 0 5mm 0;
+    font-size: 10pt;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+th {
+    background: #0056A7;
+    color: #FFFFFF;
+    font-weight: 600;
+    padding: 3mm 4mm;
+    text-align: left;
+    font-size: 9.5pt;
+    letter-spacing: 0.1px;
+}
+
+td {
+    padding: 2.5mm 4mm;
+    border-bottom: 1px solid #E8E8E8;
+    color: #1A1A1A;
+    font-size: 10pt;
+    line-height: 1.55;
+    vertical-align: top;
+}
+
+tr:nth-child(even) td {
+    background: #F6F9FF;
+}
+
+/* ============================================
+   IMAGES
+============================================ */
+
+.img-wrap {
+    margin: 5mm 0;
+    text-align: center;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    break-before: avoid;
+    page-break-before: avoid;
+}
+
+.img-wrap img {
+    max-width: 82%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ============================================
+   CODE
+============================================ */
+
+pre {
+    background: #F5F7FA;
+    border-left: 3px solid #1863DC;
+    padding: 4mm 5mm;
+    margin: 3mm 0 5mm 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9pt;
+    line-height: 1.6;
+    color: #2A2A2A;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9pt;
+    background: #EEF2FB;
+    color: #0056A7;
+    padding: 1px 4px;
+    border-radius: 2px;
+}
+
+/* ============================================
+   CTA SECTION
+============================================ */
+
+.cta-section {
+    background: #003f80;
+    padding: 8mm 10mm;
+    margin-top: 4mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border-radius: 4px;
+}
+
+.cta-section h2 {
+    font-size: 14.5pt;
+    color: #FFFFFF;
+    margin: 0 0 3mm 0;
+}
+
+.cta-section p {
+    color: #B8D4F0;
+    font-size: 10.5pt;
+    margin-bottom: 3mm;
+}
+
+.cta-section strong {
+    color: #FFFFFF;
+}
+
+.cta-section a {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+.cta-section table {
+    background: #0056A7;
+    margin-top: 3mm;
+    margin-bottom: 0;
+}
+
+.cta-section th {
+    background: #1863DC;
+    color: #FFFFFF;
+    font-size: 9pt;
+    padding: 2.5mm 3.5mm;
+    border-bottom: 1px solid #3B82F6;
+}
+
+.cta-section td {
+    color: #DDEEFF;
+    font-size: 10pt;
+    padding: 2.5mm 3.5mm;
+    border-bottom: 1px solid #1863DC;
+    background: #0056A7;
+}
+
+.cta-section tr:nth-child(even) td {
+    background: #0056A7;
+}
+
+.cta-section .callout-info {
+    background: #1863DC;
+    border-left: 3px solid #FFFFFF;
+    padding: 3.5mm 5mm;
+    margin: 3mm 0 0 0;
+}
+
+.cta-section .callout-inner {
+    color: #FFFFFF;
+    font-size: 10.5pt;
+}
+
+.cta-section .callout-inner a {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+</style>
+</head>
+<body>
+
+<!-- TITLE HEADER BLOCK (content flows immediately after) -->
+<div class="cover-block">
+  <img src="data:image/png;base64,{{logo_b64}}" class="cover-logo" alt="Abhay Singh" />
+  <hr class="cover-rule-blue" />
+  <h1 class="cover-title">{{title}}</h1>
+  {{subtitle_block}}
+  <hr class="cover-divider" />
+</div>
+
+{{content}}
+
+</body>
+</html>
