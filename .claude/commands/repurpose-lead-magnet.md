@@ -498,6 +498,55 @@ After the push script finishes, count the `[image] Uploaded` lines in its output
 
 ---
 
+## STEP 8 — GENERATE DISTRIBUTION ASSETS (after Notion push)
+
+After the core lead magnet is published, generate distribution-ready content from the same markdown source. Run both scripts in parallel:
+
+**Email Sequence (5-part micro-lesson series):**
+```
+python scripts/generate_email_sequence.py \
+  --title "[full title]" \
+  --content "output/[slugified-title]-abhay.md" \
+  --output "output/[slugified-title]-email-sequence.md" \
+  --cta-url "https://calendly.com/abhaysinghnagarkoti11/new-meeting" \
+  --notion-url "[notion page URL from STEP 7]"
+```
+
+**Social Posts (3 LinkedIn posts + 1 Twitter thread):**
+```
+python scripts/generate_social_posts.py \
+  --title "[full title]" \
+  --content "output/[slugified-title]-abhay.md" \
+  --output "output/[slugified-title]-social-posts.md" \
+  --cta-url "https://calendly.com/abhaysinghnagarkoti11/new-meeting" \
+  --notion-url "[notion page URL from STEP 7]"
+```
+
+After both complete, report:
+> "Distribution assets generated:
+> - **Email sequence:** `output/[filename]-email-sequence.md` (5 emails)
+> - **Social posts:** `output/[filename]-social-posts.md` (3 LinkedIn + 1 Twitter thread)"
+
+---
+
+## INPUT SOURCES
+
+The fetch script (`scripts/fetch_content.py`) supports these input types:
+
+| Source | Example |
+|--------|---------|
+| YouTube video | `https://www.youtube.com/watch?v=...` or `https://youtu.be/...` |
+| Notion page | `https://notion.so/...` or `https://notion.site/...` |
+| Google Doc | `https://docs.google.com/document/d/...` |
+| Google Drive | `https://drive.google.com/file/d/...` |
+| PDF file | Local file path ending in `.pdf` |
+| Any URL | Any `http://` or `https://` URL |
+| Pasted text | Raw text directly |
+
+**Multi-source mode:** Pass multiple URLs separated by newlines with `--multi` flag to combine multiple sources into one lead magnet.
+
+---
+
 ## IMPORTANT NOTES
 
 - Always read `brand/abhay-brand-context.md` before writing. Every time.
