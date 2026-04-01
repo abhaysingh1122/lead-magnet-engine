@@ -243,10 +243,19 @@ python scripts/generate_email_sequence.py --title "[title]" --content "output/[f
 python scripts/generate_social_posts.py --title "[title]" --content "output/[filename].md" --output "output/[filename]-social-posts.md" --notion-url "[notion URL if available]"
 ```
 
+**Promo Posts (DM-gated lead magnet promotions):**
+
+Ask the user for a DM keyword (e.g. PLAYBOOK) and gating type (comment keyword, DM keyword, link in comments, or direct link).
+
+```
+python scripts/generate_promo_posts.py --title "[title]" --content "output/[filename].md" --output "output/[filename]-promo-posts.md" --keyword "[KEYWORD]" --cta-type "[type]" --notion-url "[notion URL if available]"
+```
+
 Report:
 > "Distribution assets:
 > - **Email sequence:** 5-part micro-lesson series
-> - **Social posts:** 3 LinkedIn posts + 1 Twitter thread"
+> - **Social posts:** 3 LinkedIn + 1 Twitter thread
+> - **Promo posts:** 3 LinkedIn promo + 1 Twitter thread + 1 tweet (DM-gated)"
 
 ---
 
