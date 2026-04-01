@@ -88,23 +88,23 @@ The system audits silently, then runs the full 4-stage enhancement engine: audit
 ## How the Workflow Runs
 
 ```
-STEP 1   Fetch input (URL, PDF, or pasted text)
+STEP 1   Fetch input (YouTube, Notion, Google Docs, PDF, URL, or pasted text)
 STEP 2   Detect lead magnet type + choose Notion icon
 STEP 3   Load brand context
 STEP 4   4-stage engine: AUDIT -> REMOVE -> WRITE -> REBRAND
 STEP 5   Show full output in chat + write markdown to output/
 STEP 5.5 Generate 2-3 infographics in parallel, quality-check each
-STEP 5.7 (Optional) Generate styled HTML version — Claude asks first
 STEP 6   Relevance check: em dashes, banned words, structure, image refs
 STEP 6.5 Generate PDF + DOCX in parallel
 STEP 7   Push to Notion with image uploads, verify count
+STEP 8   Generate distribution assets (email sequence + social posts)
 ```
 
 ---
 
 ## Customizing the Brand
 
-Open `brand/growleads-brand-context.md` and replace it with your own brand profile. This file controls:
+Open `brand/abhay-brand-context.md` and replace it with your own brand profile. This file controls:
 
 - Company overview and ICP
 - Tone of voice rules
@@ -121,11 +121,12 @@ The skill at `.claude/commands/repurpose-lead-magnet.md` reads this file on ever
 
 | File | Description |
 |---|---|
-| `output/[slug]-[brand].md` | Full markdown (source of truth) |
-| `output/[slug]-[brand].pdf` | Styled PDF with cover page and GrowLeads footer |
-| `output/[slug]-[brand].docx` | Word document with styled callout blocks |
-| `output/[slug]-[brand].html` | Self-contained HTML (optional, Bricolage Grotesque + Bebas Neue) |
+| `output/[slug]-abhay.md` | Full markdown (source of truth) |
+| `output/[slug]-abhay.pdf` | Styled PDF with cover page and branded footer |
+| `output/[slug]-abhay.docx` | Word document with styled callout blocks |
 | `output/infographic-*.png` | 2-3 AI-generated neo-brutalist infographics |
+| `output/[slug]-email-sequence.md` | 5-part email micro-lesson series |
+| `output/[slug]-social-posts.md` | 3 LinkedIn posts + 1 Twitter/X thread |
 | Notion page | Live page with all images embedded via Notion file upload API |
 
 ---
@@ -137,16 +138,19 @@ The skill at `.claude/commands/repurpose-lead-magnet.md` reads this file on ever
   repurpose-lead-magnet.md      # The /repurpose-lead-magnet skill (core workflow)
 assets/                         # Brand logo (replace with your own)
 brand/
-  growleads-brand-context.md    # Brand profile, tone, frameworks, proof points
+  abhay-brand-context.md        # Brand profile, tone, frameworks, proof points
 scripts/
-  fetch_content.py              # Fetches Notion pages (with sub-page recursion),
-                                # Google Docs, PDFs, and generic URLs
+  fetch_content.py              # Fetches YouTube transcripts, Notion pages,
+                                # Google Docs, PDFs, and generic URLs.
+                                # Multi-source mode combines multiple inputs.
   generate_infographic.py       # Generates infographics: tries Gemini 2.5 Flash
                                 # Image first, falls back to Imagen 4
   generate_pdf_playwright.py    # Renders PDF via Playwright/Chromium with
                                 # Google Fonts, custom callout styles, and
                                 # PyMuPDF footer post-processing
   generate_doc.py               # Generates Word document with styled blocks
+  generate_email_sequence.py    # Splits lead magnet into 5-part email series
+  generate_social_posts.py      # Extracts 3 LinkedIn posts + Twitter thread
   push_to_notion.py             # Pushes markdown + images to Notion using
                                 # the file upload API (POST /v1/file_uploads)
 templates/
@@ -176,7 +180,7 @@ If any check fails, Claude regenerates with a simpler prompt. If it still fails 
 ## PDF Technical Notes
 
 - Margins are controlled by CSS `@page { margin: 20mm 26mm 22mm 26mm }` in the template. Do not pass margins via Playwright's `page.pdf()` — they conflict.
-- Footer ("GrowLeads • growleads.io" + page number) is added by PyMuPDF post-processing, not Playwright.
+- Footer ("Abhay Singh • abhaysinghnagarkoti.work@gmail.com" + page number) is added by PyMuPDF post-processing, not Playwright.
 - No watermark. Chromium produces opaque white PDF pages that make overlay watermarks invisible or conflicting. Clean output is correct.
 - Google Fonts (Bricolage Grotesque, Bebas Neue) require internet access on first run. Subsequent runs use the browser cache.
 
