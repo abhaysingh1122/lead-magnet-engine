@@ -10,6 +10,7 @@ playwright
 PyMuPDF
 python-docx
 google-genai
+youtube-transcript-api
 
 # Agent (agent/)
 anthropic

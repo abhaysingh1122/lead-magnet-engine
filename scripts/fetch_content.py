@@ -663,6 +663,113 @@ def fetch_url(url: str) -> str:
     return cleaned
 
 
+# ─── YOUTUBE ──────────────────────────────────────────────────────────────────
+
+def extract_youtube_id(url: str) -> str | None:
+    """Extract video ID from any YouTube URL format."""
+    patterns = [
+        r'(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/|youtube\.com/v/)([a-zA-Z0-9_-]{11})',
+        r'youtube\.com/shorts/([a-zA-Z0-9_-]{11})',
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return match.group(1)
+    return None
+
+
+def fetch_youtube(url: str) -> str:
+    """Fetch transcript from a YouTube video URL."""
+    try:
+        from youtube_transcript_api import YouTubeTranscriptApi
+    except ImportError:
+        sys.exit("youtube-transcript-api not installed. Run: pip install youtube-transcript-api")
+
+    video_id = extract_youtube_id(url)
+    if not video_id:
+        sys.exit(f"Could not extract YouTube video ID from URL: {url}")
+
+    print(f"[fetch] YouTube video ID: {video_id}", file=sys.stderr)
+
+    try:
+        api = YouTubeTranscriptApi()
+        entries = api.fetch(video_id, languages=['en'])
+
+        # Build structured output with timestamps
+        lines = []
+        lines.append(f"# YouTube Transcript: {url}\n")
+        lines.append(f"Video ID: {video_id}\n")
+        lines.append("---\n")
+
+        # Group entries into ~60-second chunks for readability
+        chunk_lines = []
+        chunk_start = 0
+        chunk_text = []
+
+        for entry in entries:
+            start = entry.start if hasattr(entry, 'start') else 0
+            text = entry.text if hasattr(entry, 'text') else str(entry)
+
+            if start - chunk_start >= 60 and chunk_text:
+                minutes = int(chunk_start) // 60
+                seconds = int(chunk_start) % 60
+                timestamp = f"[{minutes:02d}:{seconds:02d}]"
+                chunk_lines.append(f"{timestamp} {' '.join(chunk_text)}")
+                chunk_text = []
+                chunk_start = start
+
+            chunk_text.append(text.strip())
+
+        # Final chunk
+        if chunk_text:
+            minutes = int(chunk_start) // 60
+            seconds = int(chunk_start) % 60
+            timestamp = f"[{minutes:02d}:{seconds:02d}]"
+            chunk_lines.append(f"{timestamp} {' '.join(chunk_text)}")
+
+        lines.extend(chunk_lines)
+
+        result = "\n".join(lines)
+        total_words = sum(len(line.split()) for line in chunk_lines)
+        print(f"[fetch] Transcript: {len(entries)} segments, ~{total_words} words", file=sys.stderr)
+        return result
+
+    except Exception as e:
+        error_msg = str(e)
+        if "Subtitles are disabled" in error_msg:
+            sys.exit(f"Subtitles are disabled for this video: {video_id}")
+        elif "No transcript" in error_msg:
+            sys.exit(f"No transcript available for this video: {video_id}")
+        else:
+            sys.exit(f"Failed to fetch YouTube transcript: {error_msg}")
+
+
+# ─── MULTI-SOURCE ─────────────────────────────────────────────────────────────
+
+def fetch_multi(input_str: str, no_cache: bool = False) -> str:
+    """Fetch from multiple sources (newline-separated URLs) and combine into one document."""
+    sources = [line.strip() for line in input_str.strip().split("\n") if line.strip()]
+
+    if len(sources) <= 1:
+        return fetch(sources[0] if sources else input_str, no_cache=no_cache)
+
+    print(f"[fetch] Multi-source mode: {len(sources)} sources detected", file=sys.stderr)
+    results = []
+
+    for i, source in enumerate(sources, 1):
+        print(f"[fetch] Fetching source {i}/{len(sources)}: {source[:80]}...", file=sys.stderr)
+        try:
+            content = fetch(source, no_cache=no_cache)
+            results.append(f"--- SOURCE {i}: {source} ---\n\n{content}")
+        except SystemExit as e:
+            print(f"[warn] Source {i} failed: {e}", file=sys.stderr)
+            results.append(f"--- SOURCE {i}: {source} ---\n\n[FAILED TO FETCH: {e}]")
+
+    combined = "\n\n" + "\n\n".join(results)
+    print(f"[fetch] Combined {len(results)} sources ({len(combined):,} chars)", file=sys.stderr)
+    return combined
+
+
 # ─── ROUTER ───────────────────────────────────────────────────────────────────
 
 def fetch(input_str: str, no_cache: bool = False) -> str:
@@ -673,6 +780,11 @@ def fetch(input_str: str, no_cache: bool = False) -> str:
     if s.lower().endswith(".pdf") or (not s.startswith("http") and Path(s).exists()):
         print("[fetch] Detected: PDF file", file=sys.stderr)
         return fetch_pdf(s)
+
+    # YouTube URL
+    if "youtube.com" in s or "youtu.be" in s:
+        print("[fetch] Detected: YouTube video", file=sys.stderr)
+        return fetch_youtube(s)
 
     # Notion URL
     if "notion.so" in s or "notion.site" in s:
@@ -701,12 +813,16 @@ def fetch(input_str: str, no_cache: bool = False) -> str:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Fetch content from any URL or file")
-    parser.add_argument("--input", required=True, help="URL, file path, or raw text")
+    parser.add_argument("--input", required=True, help="URL, file path, or raw text. For multi-source, separate URLs with newlines.")
     parser.add_argument("--output", help="Optional: save to file instead of stdout")
     parser.add_argument("--no-cache", action="store_true", help="Bypass the 15-minute Notion page cache")
+    parser.add_argument("--multi", action="store_true", help="Enable multi-source mode: combine multiple URLs into one document")
 
     args = parser.parse_args()
-    content = fetch(args.input, no_cache=args.no_cache)
+    if args.multi:
+        content = fetch_multi(args.input, no_cache=args.no_cache)
+    else:
+        content = fetch(args.input, no_cache=args.no_cache)
 
     if args.output:
         size = len(content.encode("utf-8"))
