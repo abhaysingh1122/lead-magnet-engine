@@ -229,6 +229,42 @@ After presenting the content, ask:
 
 ---
 
+## STEP 7 — GENERATE DISTRIBUTION ASSETS
+
+After the core lead magnet outputs are generated, run both distribution scripts in parallel:
+
+**Email Sequence:**
+```
+python scripts/generate_email_sequence.py --title "[title]" --content "output/[filename].md" --output "output/[filename]-email-sequence.md" --notion-url "[notion URL if available]"
+```
+
+**Social Posts:**
+```
+python scripts/generate_social_posts.py --title "[title]" --content "output/[filename].md" --output "output/[filename]-social-posts.md" --notion-url "[notion URL if available]"
+```
+
+Report:
+> "Distribution assets:
+> - **Email sequence:** 5-part micro-lesson series
+> - **Social posts:** 3 LinkedIn posts + 1 Twitter thread"
+
+---
+
+## INPUT SOURCES
+
+| Source | Example |
+|--------|---------|
+| YouTube video | `https://youtube.com/watch?v=...` or `https://youtu.be/...` |
+| Notion page | `https://notion.so/...` |
+| Google Doc | `https://docs.google.com/document/d/...` |
+| Google Drive file | `https://drive.google.com/file/d/...` |
+| PDF file | Local path ending in `.pdf` |
+| Any URL | Any `http://` or `https://` URL |
+| Pasted text | Raw text directly |
+| Multiple sources | Pass multiple URLs with `--multi` flag to combine into one lead magnet |
+
+---
+
 ## IMPORTANT NOTES
 
 - Always read `brand/abhay-brand-context.md` before writing. Every time.
